@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 
-function QuestionItem({ question }) {
-  const { id, prompt, answers, correctIndex } = question;
+function QuestionItem({ question, onDeleteClick, onAnswerChange }) {
+  const [answerIndex, setCorrectIndex] = useState(question.correctIndex)
 
+  const { id, prompt, answers } = question;
   const options = answers.map((answer, index) => (
     <option key={index} value={index}>
       {answer}
     </option>
   ));
+
+  function handleAnswerChange(event) {
+    fetch(`http://localhose:4000/questions/${id}`, {
+      method: "PATCH",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({correctIndex: answerIndex})
+    })
+    .then((res)=>res.json())
+    .then(() => setCorrectIndex(event.target.value))
+    console.log(event.target.value)
+  }
+ 
 
   return (
     <li>
@@ -15,9 +28,9 @@ function QuestionItem({ question }) {
       <h5>Prompt: {prompt}</h5>
       <label>
         Correct Answer:
-        <select defaultValue={correctIndex}>{options}</select>
+        <select value={answerIndex} onChange={handleAnswerChange}>{options}</select>
       </label>
-      <button>Delete Question</button>
+      <button id={id} onClick={onDeleteClick}>Delete Question</button>
     </li>
   );
 }
