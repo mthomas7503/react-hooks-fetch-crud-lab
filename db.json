@@ -9,7 +9,7 @@
         "reactive",
         "controlled"
       ],
-      "correctIndex": 1
+      "correctIndex": "1"
     },
     {
       "prompt": "What month is my birthday?",
@@ -19,7 +19,7 @@
         "June",
         "August"
       ],
-      "correctIndex": 0,
+      "correctIndex": "0",
       "id": 7
     }
   ]

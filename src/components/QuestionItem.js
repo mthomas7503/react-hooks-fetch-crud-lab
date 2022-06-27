@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 function QuestionItem({ question, onDeleteClick, onAnswerChange }) {
-  const [answerIndex, setCorrectIndex] = useState(question.correctIndex)
+  const [answerIndex, setAnswerIndex] = useState(question.correctIndex)
 
   const { id, prompt, answers } = question;
   const options = answers.map((answer, index) => (
@@ -11,13 +11,13 @@ function QuestionItem({ question, onDeleteClick, onAnswerChange }) {
   ));
 
   function handleAnswerChange(event) {
-    fetch(`http://localhose:4000/questions/${id}`, {
+    fetch(`http://localhost:4000/questions/${id}`, {
       method: "PATCH",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({correctIndex: answerIndex})
+      body: JSON.stringify({"correctIndex": answerIndex})
     })
     .then((res)=>res.json())
-    .then(() => setCorrectIndex(event.target.value))
+    .then(() => setAnswerIndex(event.target.value))
     console.log(event.target.value)
   }
  
@@ -28,7 +28,7 @@ function QuestionItem({ question, onDeleteClick, onAnswerChange }) {
       <h5>Prompt: {prompt}</h5>
       <label>
         Correct Answer:
-        <select value={answerIndex} onChange={handleAnswerChange}>{options}</select>
+        <select defaultValue={answerIndex} onChange={handleAnswerChange}>{options}</select>
       </label>
       <button id={id} onClick={onDeleteClick}>Delete Question</button>
     </li>
